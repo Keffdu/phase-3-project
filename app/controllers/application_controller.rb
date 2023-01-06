@@ -9,7 +9,7 @@ class ApplicationController < Sinatra::Base
   end
 
   post "/manufacturers" do
-    newMFG = Manufacturer.create(params[:formData])
+    newMFG = Manufacturer.create(params)
     newMFG.to_json
   end
   
@@ -19,6 +19,17 @@ class ApplicationController < Sinatra::Base
     mfg.to_json(include: :synth_modules)
   end
   
+  get "/edit/module/:id" do
+    editMod = SynthModule.find(params[:id])
+    editMod.to_json
+  end
+
+  patch "/edit/module/:id" do
+    editMod = SynthModule.find(params[:id])
+    editMod.update(params)
+    editMod.to_json
+  end
+
   post "/modules" do
     newModule = SynthModule.create(params)
     newModule.to_json
