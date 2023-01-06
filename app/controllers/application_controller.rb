@@ -13,10 +13,15 @@ class ApplicationController < Sinatra::Base
     newMFG.to_json
   end
   
-  
   get "/manufacturer/:id" do
     mfg = Manufacturer.find(params[:id])
     mfg.to_json(include: :synth_modules)
+  end
+  
+  # ----------------------------------------------
+  
+  get "/modules" do
+    SynthModule.all.to_json
   end
   
   get "/edit/module/:id" do
@@ -35,9 +40,12 @@ class ApplicationController < Sinatra::Base
     newModule.to_json
   end
 
-  get "/modules" do
-    SynthModule.all.to_json
+  delete "/delete/module/:id" do
+    deleteMod = SynthModule.find(params[:id])
+    deleteMod.destroy
+    deleteMod.to_json
   end
+
 
   get "/:option/:search" do
   # search = SynthModule.where("#{params[:option]} = ?", params[:search])
